@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,12 +37,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.pjasoft.composefundamentals.components.CategoryItem
+import com.pjasoft.composefundamentals.components.ProductItem
 import com.pjasoft.composefundamentals.models.categories
 import com.pjasoft.composefundamentals.ui.theme.ComposeFUndamentalsTheme
 // Jetpack COmpose 1 Activity -- Android Views
@@ -57,7 +61,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeFUndamentalsTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeScreen()
+                    HomeScreen(innerPadding)
                 }
             }
         }
@@ -175,10 +179,13 @@ fun MyBox(){
 }
 
 @Composable
-fun HomeScreen(){
+fun HomeScreen(innerPadding : PaddingValues){
+    val colors = MaterialTheme.colorScheme
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(colors.background)
+            .padding(innerPadding)
             .padding(20.dp)
     ) {
         // Header del Menu con la foto
@@ -189,14 +196,13 @@ fun HomeScreen(){
         ) {
             Text(
                 text = "Menu",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.titleLarge
             )
             Box(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(CircleShape)
-                    .background(Color.Red)
+                    .background(colors.primary)
             ) {
 
             }
@@ -233,10 +239,10 @@ fun HomeScreen(){
         }
 
         Text(
-            text = "Today's Deal",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 10.dp)
+            text = stringResource(R.string.today_deal),
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(top = 10.dp),
+            color = colors.onSecondary
         )
         // Todays deal
         Box(
@@ -271,10 +277,10 @@ fun HomeScreen(){
         // Products
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             items(categories){ category ->
-                CategoryItem(category)
+                ProductItem()
             }
         }
     }
@@ -288,6 +294,8 @@ fun HomeScreen(){
 @Composable
 fun GreetingPreview() {
     ComposeFUndamentalsTheme {
-        HomeScreen()
+        HomeScreen(
+            innerPadding = PaddingValues(0.dp)
+        )
     }
 }
